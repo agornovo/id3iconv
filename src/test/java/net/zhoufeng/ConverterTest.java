@@ -451,28 +451,6 @@ class ConverterTest {
     }
 
     @Test
-    void testReencodeAndUpdate_does_not_update_if_last_frame_not_reencoded()
-            throws UnsupportedEncodingException, IOException,
-            ID3v2DecompressionException {
-        /*
-         * This test illustrates a potential bug. If the last frame in the loop is not
-         * re-encoded, then the v2 tag would not be updated
-         */
-        spy.setId3v2(mockId3V2Tag);
-        Vector<ID3v2Frame> frames = new Vector();
-        ID3v2Frame frame1 = new ID3v2Frame(mockInputStream);
-        ID3v2Frame frame2 = new ID3v2Frame(mockInputStream);
-        frames.add(frame1);
-        frames.add(frame2);
-        doReturn(true).when(spy).reencodeFrame(frame1);
-        doReturn(false).when(spy).reencodeFrame(frame2);
-        spy.reencodeAndUpdate(frames);
-        verify(mockId3V2Tag, never()).touch();
-        verify(mockId3V2Tag, never()).update();
-        verify(spy, times(1)).removeV1tag();
-    }
-
-    @Test
     void testReencodeAndUpdate_does_update_if_intermediate_frame_not_reencoded()
             throws UnsupportedEncodingException, IOException,
             ID3v2DecompressionException {
@@ -487,6 +465,24 @@ class ConverterTest {
         doReturn(true).when(spy).reencodeFrame(frame1);
         doReturn(false).when(spy).reencodeFrame(frame2);
         doReturn(true).when(spy).reencodeFrame(frame3);
+        spy.reencodeAndUpdate(frames);
+        verify(mockId3V2Tag, times(1)).touch();
+        verify(mockId3V2Tag, times(1)).update();
+        verify(spy, times(1)).removeV1tag();
+    }
+
+    @Test
+    void testReencodeAndUpdate_does_update_if_last_frame_not_reencoded_but_a_prior_one_is()
+            throws UnsupportedEncodingException, IOException,
+            ID3v2DecompressionException {
+        spy.setId3v2(mockId3V2Tag);
+        Vector<ID3v2Frame> frames = new Vector();
+        ID3v2Frame frame1 = new ID3v2Frame(mockInputStream);
+        ID3v2Frame frame2 = new ID3v2Frame(mockInputStream);
+        frames.add(frame1);
+        frames.add(frame2);
+        doReturn(true).when(spy).reencodeFrame(frame1);
+        doReturn(false).when(spy).reencodeFrame(frame2);
         spy.reencodeAndUpdate(frames);
         verify(mockId3V2Tag, times(1)).touch();
         verify(mockId3V2Tag, times(1)).update();
@@ -578,14 +574,14 @@ class ConverterTest {
         classUnderTest.removeV1tag();
         verify(mockId3V1Tag, times(1)).removeTag();
     }
-    
+
     @Test
     void testShouldBeReenconded_returns_false_if_byte_array_does_not_start_with_zero()
             throws UnsupportedEncodingException {
         byte[] byteArrayWithLeadingZero = new byte[] { NOT_ZERO, RANDOM_BYTE };
         assertThat(classUnderTest.shouldBeReenconded(byteArrayWithLeadingZero)).isFalse();
     }
-    
+
     @Test
     void testShouldBeReenconded_returns_false_if_byte_array_starts_with_zero_but_is_less_than_2_bytes_long()
             throws UnsupportedEncodingException {

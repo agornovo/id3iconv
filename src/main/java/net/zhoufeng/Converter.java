@@ -255,12 +255,15 @@ public class Converter {
 
     protected void reencodeAndUpdate(Vector framesToReencode)
             throws UnsupportedEncodingException, IOException {
+        boolean atLeastOneFieldIsReencoded = false;
         boolean isReencoded = false;
         for (Iterator iter = framesToReencode.iterator(); iter.hasNext();) {
             ID3v2Frame frame = (ID3v2Frame) iter.next();
             isReencoded = reencodeFrame(frame);
+            if (isReencoded && !atLeastOneFieldIsReencoded)
+                atLeastOneFieldIsReencoded = true;
         }
-        if (shouldId3V2BeUpdated(isReencoded)) {
+        if (shouldId3V2BeUpdated(atLeastOneFieldIsReencoded)) {
             id3v2.touch();
             id3v2.update();
         }
