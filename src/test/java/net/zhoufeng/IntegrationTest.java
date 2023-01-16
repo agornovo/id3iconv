@@ -6,11 +6,12 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.google.common.io.Files;
@@ -19,6 +20,9 @@ import com.google.common.io.Files;
 class IntegrationTest {
     private ID3iconv classUnderTest;
 
+    @TempDir
+    Path tempDir;
+
     @BeforeEach
     void setUp() {
         classUnderTest = new ID3iconv();
@@ -26,22 +30,29 @@ class IntegrationTest {
     }
 
     @Test
-    void testRun() throws IOException, URISyntaxException {
-        /*
-         * All content in src/test/resources is copied into target/test-classes folder.
-         * So to get file from test resources during maven build you have to load it
-         * from test-classes folder
-         * 
-         * https://stackoverflow.com/a/50187427
-         */
-        Path sampleFilePath = Paths.get(
-                getClass().getProtectionDomain().getCodeSource().getLocation().toURI())
-                .resolve(Paths.get("sample-uncoverted.mp3"));
-        String[] args = { "-e", "WINDOWS-1251", "-d", sampleFilePath.toString() };
+    void testRun_converts_id3v1_tag_to_unicode() throws IOException, URISyntaxException {
+        Path tempConvertedInPlaceFilePath = tempDir.resolve("sample-id3v1-unconverted.mp3");
+        FileUtils.copyFile(new File("src/test/resources/sample-id3v1-unconverted.mp3"),
+                tempConvertedInPlaceFilePath.toFile());
+        String[] args = { "-e", "WINDOWS-1251", "-d", "-v1",
+                tempConvertedInPlaceFilePath.toString() };
         classUnderTest.run(args);
-        File convertedInPlaceFile = sampleFilePath.toFile();
-        File expectedFile = new File("src/test/resources/sample-converted.mp3");
-        assertThat(Files.equal(convertedInPlaceFile, expectedFile)).isTrue();
+        File actual = tempConvertedInPlaceFilePath.toFile();
+        File expected = new File("src/test/resources/sample-id3v1-converted.mp3");
+        assertThat(Files.equal(actual, expected)).isTrue();
+    }
+
+    @Test
+    void testRun_converts_id3v2_tag_to_unicode() throws IOException, URISyntaxException {
+        Path tempConvertedInPlaceFilePath = tempDir.resolve("sample-id3v2-unconverted.mp3");
+        FileUtils.copyFile(new File("src/test/resources/sample-id3v2-unconverted.mp3"),
+                tempConvertedInPlaceFilePath.toFile());
+        String[] args = { "-e", "WINDOWS-1251", "-d",
+                tempConvertedInPlaceFilePath.toString() };
+        classUnderTest.run(args);
+        File actual = tempConvertedInPlaceFilePath.toFile();
+        File expected = new File("src/test/resources/sample-id3v2-converted.mp3");
+        assertThat(Files.equal(actual, expected)).isTrue();
     }
 
 }

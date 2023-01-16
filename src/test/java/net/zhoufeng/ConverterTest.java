@@ -94,19 +94,6 @@ class ConverterTest {
     }
 
     @Test
-    void testAddFrame_adds_frame()
-            throws UnsupportedEncodingException, ID3v2DecompressionException {
-        spy.setId3v2(mockId3V2Tag);
-        doReturn(PRESET_BYTE_ARRAY).when(spy).getUnicodeLittleByteArrayOf(PRESET_STRING);
-        spy.addFrame(PRESET_FRAME_ID, PRESET_STRING);
-        verify(spy, times(1)).getUnicodeLittleByteArrayOf(PRESET_STRING);
-        final byte[] presetContent = spy.getContentByteArray(PRESET_BYTE_ARRAY);
-        verify(spy, times(1)).getFrame(PRESET_FRAME_ID, presetContent, false, false,
-                false, ID3v2Frame.NO_COMPRESSION, (byte) 0, (byte) 0);
-        verify(mockId3V2Tag, times(1)).addFrame(any(ID3v2Frame.class));
-    }
-
-    @Test
     void testAddFrame_returns_if_no_content()
             throws UnsupportedEncodingException, ID3v2DecompressionException {
         spy.setId3v2(mockId3V2Tag);
