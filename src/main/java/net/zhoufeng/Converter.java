@@ -92,7 +92,7 @@ public class Converter {
         addFrame("TPE1", id3v1.getArtist());
         addFrame("COMM", id3v1.getComment());
         addFrame("TIT2", id3v1.getTitle());
-        addFrame("TORY", id3v1.getYear());
+        addFrame("TYER", id3v1.getYear());
         addGenre();
         addFrame("TRCK", id3v1.getTrack() + "");
     }
