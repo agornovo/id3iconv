@@ -120,7 +120,7 @@ class ConverterTest {
         verify(spy, times(1)).addFrame("TPE1", PRESET_ARTIST);
         verify(spy, times(1)).addFrame("COMM", PRESET_COMMENT);
         verify(spy, times(1)).addFrame("TIT2", PRESET_TITLE);
-        verify(spy, times(1)).addFrame("TORY", PRESET_YEAR);
+        verify(spy, times(1)).addFrame("TYER", PRESET_YEAR);
         verify(spy, times(1)).addGenre();
         verify(spy, times(1)).addFrame("TRCK", String.valueOf(PRESET_TRACK));
     }
