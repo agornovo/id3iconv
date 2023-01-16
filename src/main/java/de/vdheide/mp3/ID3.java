@@ -136,7 +136,7 @@ public class ID3 {
 				throw new NoID3TagException();
 			}
 		}
-		return genre.byteValue();
+		return Byte.toUnsignedInt(genre.byteValue());
 	}
 
 	/**
@@ -168,7 +168,7 @@ public class ID3 {
 				throw new NoID3TagException();
 			}
 		}
-		return track.byteValue();
+		return Byte.toUnsignedInt(track.byteValue());
 	}
 
 	/**
