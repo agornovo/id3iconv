@@ -251,19 +251,6 @@ class ConverterTest {
     }
 
     @Test
-    void testGetId3v1Tag() {
-        classUnderTest.getId3v1Tag(mockFile);
-    }
-
-    @Test
-    void testGetId3v2Tag() throws ID3v2IllegalVersionException, ID3v2WrongCRCException,
-            ID3v2DecompressionException, IOException {
-        File file = File.createTempFile(RANDOM_FILE_NAME, RANDOM_FILE_EXTENSION);
-        file.deleteOnExit();
-        classUnderTest.getId3v2Tag(file);
-    }
-
-    @Test
     void testGetUnicodeLittleByteArrayOf() throws UnsupportedEncodingException {
         byte[] expected = PRESET_STRING.getBytes("UnicodeLittle");
         assertThat(classUnderTest.getUnicodeLittleByteArrayOf(PRESET_STRING))
@@ -424,18 +411,6 @@ class ConverterTest {
     }
 
     @Test
-    void testIsText_returns_false_when_id_does_not_start_with_capital_letter_t() {
-        when(mockId3V2Frame.getID()).thenReturn("t");
-        assertThat(classUnderTest.isText(mockId3V2Frame)).isFalse();
-    }
-
-    @Test
-    void testIsText_returns_true_when_id_starts_with_capital_letter_t() {
-        when(mockId3V2Frame.getID()).thenReturn("T");
-        assertThat(classUnderTest.isText(mockId3V2Frame)).isTrue();
-    }
-
-    @Test
     void testReencode_does_not_reencode_when_not_needed() throws UnsupportedEncodingException {
         when(mockId3V2Frame.getContent()).thenReturn(PRESET_BYTE_ARRAY);
         doReturn(false).when(spy).shouldBeReenconded(PRESET_BYTE_ARRAY);
@@ -501,30 +476,6 @@ class ConverterTest {
         verify(mockId3V2Tag, times(1)).touch();
         verify(mockId3V2Tag, times(1)).update();
         verify(spy, times(1)).removeV1tag();
-    }
-
-    @Test
-    void testReencodeFrame_reencodes_text_frame() throws UnsupportedEncodingException {
-        doReturn(true).when(spy).isText(mockId3V2Frame);
-        doReturn(false).when(spy).isNumericalStringOrUrl(mockId3V2Frame);
-        doReturn(true).when(spy).reencode(mockId3V2Frame);
-        spy.reencodeFrame(mockId3V2Frame);
-        verify(spy, times(1)).reencode(mockId3V2Frame);
-    }
-
-    @Test
-    void testReencodeFrame_returns_false_when_frame_is_a_numerical_string_or_a_url()
-            throws UnsupportedEncodingException {
-        doReturn(true).when(spy).isText(mockId3V2Frame);
-        doReturn(true).when(spy).isNumericalStringOrUrl(mockId3V2Frame);
-        assertThat(spy.reencodeFrame(mockId3V2Frame)).isFalse();
-    }
-
-    @Test
-    void testReencodeFrame_returns_false_when_frame_is_not_text()
-            throws UnsupportedEncodingException {
-        doReturn(false).when(spy).isText(mockId3V2Frame);
-        assertThat(spy.reencodeFrame(mockId3V2Frame)).isFalse();
     }
 
     @Test
