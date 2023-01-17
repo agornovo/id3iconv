@@ -56,6 +56,9 @@ class ConverterTest {
     private static final Integer UNKNOWN_GENRE_LOWER_RANGE = -1;
     private static final int UNKNOWN_GENRE_UPPER_RANGE = 65000;
     private static final int ZERO = 0;
+    private static final String PRESET_FRAME_ID_1 = "PRESET_FRAME_ID_1";
+    private static final String PRESET_FRAME_ID_2 = "PRESET_FRAME_ID_2";
+    private static final String PRESET_FRAME_ID_3 = "PRESET_FRAME_ID_3";
 
     @InjectMocks
     private Converter classUnderTest;
@@ -419,8 +422,11 @@ class ConverterTest {
         spy.setId3v2(mockId3V2Tag);
         Vector<ID3v2Frame> frames = new Vector();
         ID3v2Frame frame1 = new ID3v2Frame(mockInputStream);
+        frame1.setID(PRESET_FRAME_ID_1);
         ID3v2Frame frame2 = new ID3v2Frame(mockInputStream);
+        frame2.setID(PRESET_FRAME_ID_2);
         ID3v2Frame frame3 = new ID3v2Frame(mockInputStream);
+        frame3.setID(PRESET_FRAME_ID_3);
         frames.add(frame1);
         frames.add(frame2);
         frames.add(frame3);
@@ -440,7 +446,9 @@ class ConverterTest {
         spy.setId3v2(mockId3V2Tag);
         Vector<ID3v2Frame> frames = new Vector();
         ID3v2Frame frame1 = new ID3v2Frame(mockInputStream);
+        frame1.setID(PRESET_FRAME_ID_1);
         ID3v2Frame frame2 = new ID3v2Frame(mockInputStream);
+        frame2.setID(PRESET_FRAME_ID_2);
         frames.add(frame1);
         frames.add(frame2);
         doReturn(true).when(spy).reencodeFrame(frame1);

@@ -114,7 +114,7 @@ public class Converter {
             ID3v2WrongCRCException, ID3v2DecompressionException, IOException,
             NoID3TagException, NoID3v2TagException {
         id3v1 = getId3v1Tag(file);
-        id3v1.encoding = encoding;
+        id3v1.setEncoding(encoding);
         id3v2 = getId3v2Tag(file);
 
         boolean hasv1 = id3v1.checkForTag();
