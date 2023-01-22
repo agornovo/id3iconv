@@ -6,7 +6,7 @@
         <version>3.0.1</version>
         <relativePath /> <!-- lookup parent from repository -->
     </parent>
-    <groupId>net.zhoufeng</groupId>
+    <groupId>com.github.agornovo</groupId>
     <artifactId>id3iconv</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>ID3iconv </name>
@@ -16,6 +16,12 @@
         <start-class>net.zhoufeng.ID3iconv</start-class>
         <java.version>17</java.version>
     </properties>
+    <scm>
+        <connection>scm:git:${project.scm.url}</connection>
+        <developerConnection>scm:git:${project.scm.url}</developerConnection>
+        <url>https://github.com/agornovo/id3iconv.git</url>
+        <tag>HEAD</tag>
+    </scm>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -32,7 +38,7 @@
             <version>2.11.0</version>
         </dependency>
         <dependency>
-            <groupId>de.vdheide</groupId>
+            <groupId>com.github.agornovo</groupId>
             <artifactId>mp3-tagging</artifactId>
             <version>0.5.0-SNAPSHOT</version>
         </dependency>
@@ -56,4 +62,11 @@
             </plugin>
         </plugins>
     </build>
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/agornovo/public</url>
+        </repository>
+    </distributionManagement>
 </project>

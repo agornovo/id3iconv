@@ -14,4 +14,4 @@ jobs:
           java-version: '17'
           distribution: 'zulu'
       - name: Build with Maven
-        run: mvn --batch-mode --update-snapshots package
+        run: mvn --batch-mode --update-snapshots --settings=settings.xml -Drepo.login=${{ secrets.MAVEN_USERNAME }} -Drepo.pwd=${{ secrets.MAVEN_TOKEN }} package
