@@ -107,6 +107,26 @@ public class Converter {
     }
 
     /**
+     * Modifed by ChiWai so that "convert" can be called by "Unicode Rewriter"
+     * Rewrite can tell if the file is converted successfully or not. Return value:
+     * 0: Successful conversion of the file 1: No conversion takes place. No error
+     * is reported. 2: Error is reported
+     * 
+     * @throws IOException
+     * @throws NoID3v2TagException
+     * @throws NoID3TagException
+     * @throws ID3v2DecompressionException
+     * @throws ID3v2WrongCRCException
+     * @throws ID3v2IllegalVersionException
+     */
+    public void convert(File file, String encoding) throws ID3v2IllegalVersionException,
+            ID3v2WrongCRCException, ID3v2DecompressionException, NoID3TagException,
+            NoID3v2TagException, IOException {
+        this.encoding = encoding;
+        convert(file);
+    }
+
+    /**
      * Convert the ID3 tag from any encoding to Unicode. If the original file
      * contains ID3 v1 tags, it is converted to ID3v2 in order to support Unicode.
      */
@@ -114,7 +134,7 @@ public class Converter {
             ID3v2WrongCRCException, ID3v2DecompressionException, IOException,
             NoID3TagException, NoID3v2TagException {
         id3v1 = getId3v1Tag(file);
-        id3v1.encoding = encoding;
+        id3v1.setEncoding(encoding);
         id3v2 = getId3v2Tag(file);
 
         boolean hasv1 = id3v1.checkForTag();
