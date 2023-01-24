@@ -8,7 +8,7 @@
     </parent>
     <groupId>com.github.agornovo</groupId>
     <artifactId>id3iconv</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.0.3</version>
     <name>ID3iconv </name>
     <description>A Java command line tool to convert ID3 tags to Unicode</description>
     <url>https://github.com/agornovo/id3iconv</url>
@@ -108,7 +108,7 @@
         <connection>scm:git:git@github.com:agornovo/id3iconv.git</connection>
         <developerConnection>scm:git:git@github.com:agornovo/id3iconv.git</developerConnection>
         <url>https://github.com/agornovo/id3iconv/tree/main</url>
-        <tag>HEAD</tag>
+        <tag>id3iconv-0.0.3</tag>
     </scm>
     <developers>
         <developer>
