@@ -3,12 +3,12 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.1</version>
+        <version>3.0.2</version>
         <relativePath /> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.github.agornovo</groupId>
     <artifactId>id3iconv</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.4-SNAPSHOT</version>
     <name>ID3iconv </name>
     <description>A Java command line tool to convert ID3 tags to Unicode</description>
     <url>https://github.com/agornovo/id3iconv</url>
