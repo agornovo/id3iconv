@@ -17,9 +17,9 @@ http://zhoufeng.net/eng/id3iconv
 Make sure you have at least a Java 17 Java Runtime Environment (JRE) installed in your environment.  Get started by running the following command.
 The command prompt you with supported command-line options.
 
-java -jar id3iconv-0.0.1-SNAPSHOT-exec.jar
+java -jar id3iconv-0.0.4-SNAPSHOT-exec.jar
 
-Replace the id3iconv-0.0.1-SNAPSHOT-exec.jar with the latest *-exec.jar file name available.
+Replace the id3iconv-0.0.4-SNAPSHOT-exec.jar with the latest *-exec.jar file name available.
 
 # Test mp3 file
 Empty mp3 file, used for testing, copied from https://github.com/anars/blank-audio

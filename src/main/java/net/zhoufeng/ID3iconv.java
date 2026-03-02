@@ -106,7 +106,7 @@ public class ID3iconv implements CommandLineRunner {
                     converter.convert(file);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                converter.error("Error processing " + args[i] + ": " + e.getMessage());
             }
     }
 
