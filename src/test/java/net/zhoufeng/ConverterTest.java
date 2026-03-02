@@ -13,6 +13,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import org.junit.jupiter.api.AfterEach;
@@ -66,7 +68,7 @@ class ConverterTest {
     @Mock
     private File mockFile;
     @Mock
-    private Vector<?> mockFrames;
+    private Vector<ID3v2Frame> mockFrames;
     @Mock
     private ID3 mockId3V1Tag;
     @Mock
@@ -420,7 +422,7 @@ class ConverterTest {
             throws UnsupportedEncodingException, IOException,
             ID3v2DecompressionException {
         spy.setId3v2(mockId3V2Tag);
-        Vector<ID3v2Frame> frames = new Vector();
+        List<ID3v2Frame> frames = new ArrayList<>();
         ID3v2Frame frame1 = new ID3v2Frame(mockInputStream);
         frame1.setID(PRESET_FRAME_ID_1);
         ID3v2Frame frame2 = new ID3v2Frame(mockInputStream);
@@ -444,7 +446,7 @@ class ConverterTest {
             throws UnsupportedEncodingException, IOException,
             ID3v2DecompressionException {
         spy.setId3v2(mockId3V2Tag);
-        Vector<ID3v2Frame> frames = new Vector();
+        List<ID3v2Frame> frames = new ArrayList<>();
         ID3v2Frame frame1 = new ID3v2Frame(mockInputStream);
         frame1.setID(PRESET_FRAME_ID_1);
         ID3v2Frame frame2 = new ID3v2Frame(mockInputStream);
@@ -463,7 +465,7 @@ class ConverterTest {
     void testReencodeAndUpdate_happy_path() throws UnsupportedEncodingException,
             IOException, ID3v2DecompressionException {
         spy.setId3v2(mockId3V2Tag);
-        Vector<ID3v2Frame> frames = new Vector();
+        List<ID3v2Frame> frames = new ArrayList<>();
         ID3v2Frame frame1 = new ID3v2Frame(mockInputStream);
         frames.add(frame1);
         doReturn(true).when(spy).reencodeFrame(frame1);
@@ -479,7 +481,7 @@ class ConverterTest {
         spy.setId3v2(mockId3V2Tag);
         when(mockId3V2Tag.getFrames()).thenReturn(null);
         spy.reencodeId3v2TagToUnicode();
-        verify(spy, never()).reencodeAndUpdate(any(Vector.class));
+        verify(spy, never()).reencodeAndUpdate(any(List.class));
     }
 
     @Test
@@ -603,7 +605,7 @@ class ConverterTest {
     @Test
     void testThereAreFrames_returns_true_when_frames_are_not_empty()
             throws ID3v2DecompressionException, IOException {
-        Vector<ID3v2Frame> frames = new Vector();
+        List<ID3v2Frame> frames = new ArrayList<>();
         ID3v2Frame frame1 = new ID3v2Frame(mockInputStream);
         frames.add(frame1);
         assertThat(classUnderTest.thereAreFrames(frames)).isTrue();

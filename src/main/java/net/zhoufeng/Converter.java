@@ -25,9 +25,8 @@ package net.zhoufeng;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
@@ -80,13 +79,8 @@ public class Converter {
             "World Music", "Neoclassical", "Audiobook", "Audio Theatre",
             "Neue Deutsche Welle", "Podcast", "Indie-Rock", "G-Funk", "Dubstep",
             "Garage Rock", "Psybient" };
-    private static final String[] NON_UNICODE_FIELDS = { "TDAT", "TIME", "TPOS", "TRCK",
-            "TYER" };
-    private static HashSet<String> nonUnicodeFields = new HashSet<>();
-    static {
-        for (int i = 0; i < NON_UNICODE_FIELDS.length; i++)
-            nonUnicodeFields.add(NON_UNICODE_FIELDS[i]);
-    }
+    private static final Set<String> nonUnicodeFields = Set.of("TDAT", "TIME", "TPOS",
+            "TRCK", "TYER");
     private boolean dry;
     private String encoding = System.getProperty("file.encoding");
     private boolean forceV1asSource;
@@ -284,7 +278,8 @@ public class Converter {
          * check whether the frame is "numerical string" or URL as defined by IDv2.3.
          * They should be encoded in ISO8859-1, not Unicode
          */
-        return id3v2.getVersion() == 3 && nonUnicodeFields.contains(frame.getID());
+        return id3v2.getVersion() == 3 && frame.getID() != null
+                && nonUnicodeFields.contains(frame.getID());
     }
 
     protected boolean isText(ID3v2Frame frame) {
@@ -304,13 +299,11 @@ public class Converter {
         return false;
     }
 
-    protected void reencodeAndUpdate(Vector framesToReencode)
+    protected void reencodeAndUpdate(List<ID3v2Frame> framesToReencode)
             throws UnsupportedEncodingException, IOException {
         boolean atLeastOneFieldIsReencoded = false;
-        boolean isReencoded = false;
-        for (Iterator iter = framesToReencode.iterator(); iter.hasNext();) {
-            ID3v2Frame frame = (ID3v2Frame) iter.next();
-            isReencoded = reencodeFrame(frame);
+        for (ID3v2Frame frame : framesToReencode) {
+            boolean isReencoded = reencodeFrame(frame);
             if (isReencoded && !atLeastOneFieldIsReencoded)
                 atLeastOneFieldIsReencoded = true;
         }
@@ -341,7 +334,8 @@ public class Converter {
         // convert all text frames
         info("Reencoding id3v2 tag into Unicode");
 
-        Vector frames = id3v2.getFrames();
+        @SuppressWarnings("unchecked")
+        List<ID3v2Frame> frames = id3v2.getFrames();
         if (thereAreFrames(frames)) {
             reencodeAndUpdate(frames);
         }
@@ -364,7 +358,7 @@ public class Converter {
         return !dry && updated;
     }
 
-    protected boolean thereAreFrames(Vector frames) {
+    protected boolean thereAreFrames(List<ID3v2Frame> frames) {
         return frames != null && frames.size() > 0;
     }
 
